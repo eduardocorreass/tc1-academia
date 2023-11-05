@@ -76,6 +76,56 @@ function listStudents() {
     }
 }
 
+function openEditModal(index){
+    const studentsData = JSON.parse(localStorage.getItem('students'))
+    if (studentsData && studentsData.length > index) {
+        const student = studentsData[index]
+        document.getElementById('editIndex').value = index
+        document.getElementById('editName').value = student.name
+        document.getElementById('editAge').value = student.age
+        document.getElementById('editAddress').value = student.address
+        document.getElementById('editEmail').value = student.email
+        $('#editModal').modal('show')
+    }
+}
+
+function saveEditedStudent() {
+    const index = document.getElementById('editIndex').value
+    const name = document.getElementById('editName').value
+    const age = document.getElementById('editAge').value
+    const address = document.getElementById('editAddress').value
+    const email = document.getElementById('editEmail').value
+
+    if (!validateName(name)) {
+        alert("Por favor, insira um nome válido.")
+        return
+    }
+
+    if (!validateAge(age)) {
+        alert("Por favor, insira uma idade válida entre 1 e 100.")
+        return
+    }
+
+    if (!validateAddress(address)) {
+        alert("Por favor, insira um endereço válido.")
+        return
+    }
+
+    if (!validateEmail(email)) {
+        alert("Por favor, insira um endereço de email válido.")
+        return
+    }
+
+    const studentsData = JSON.parse(localStorage.getItem('students'))
+    if (studentsData && studentsData.length > index) {
+        studentsData[index] = { name, age, address, email }
+        localStorage.setItem('students', JSON.stringify(studentsData))
+        $('#editModal').modal('hide')
+        alert("Aluno editado com sucesso!")
+        listStudents()
+    }
+}
+
 function validateName(name) {
     return name.trim() !== ''
 }
