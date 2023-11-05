@@ -52,6 +52,30 @@ function deleteStudent(index) {
     }
 }
 
+function listStudents() {
+    const studentsData = JSON.parse(localStorage.getItem('students'))
+    const tableBody = document.querySelector('tbody')
+
+    tableBody.innerHTML = ''
+
+    if (studentsData && studentsData.length > 0) {
+        studentsData.forEach((student, index) => {
+            const row = document.createElement('tr')
+            row.innerHTML = `
+            <td>${student.name}</td>
+            <td>${student.age}</td>
+            <td>${student.address}</td>
+            <td>${student.email}</td>
+            <td>
+                <button class="btn btn-primary" onclick="openEditModal(${index})">Editar</button>
+                <button class="btn btn-danger" onclick="deleteStudent(${index})">Excluir</button>
+            </td>
+            `
+            tableBody.appendChild(row)
+        })
+    }
+}
+
 function validateName(name) {
     return name.trim() !== ''
 }
@@ -69,3 +93,4 @@ function validateEmail(email) {
 function validateAddress(address) {
     return address.trim() !== ''
 }
+
